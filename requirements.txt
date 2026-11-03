@@ -1,1 +1,1 @@
-
+# A text file that lists all the external Python libraries (like Pandas, Scikit-Learn, NumPy) and their exact version numbers required to run your code.
