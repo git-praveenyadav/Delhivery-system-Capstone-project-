@@ -21,8 +21,6 @@ Test repo for capstone project
 
 ## Data findings (PART - A)
 
-### <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Animations/Objects/Bar%20Chart.webp" width="30" align="center" /> Data findings (PART - A)
-
 1. **Service Type Delay Rates**: Express shipments experience the highest delay frequency at a delay rate of `0.4897` (119 delayed out of 243 shipments), followed by Standard at `0.2056`, and Economy at `0.0857`.
 2. **Hub Tier Progression**: The delay rate increases significantly across hub operational tiers, rising from `0.0400` in Tier 1 hubs to `0.2150` in Tier 2 hubs (and `0.4400` in Tier 3 hubs).
 3. **Declared Value Distribution**: The median-filled declared value across the dataset has a mean of `1533.05` INR and a median of `1121.50` INR.
