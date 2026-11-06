@@ -64,12 +64,15 @@ X_train_full, X_test, y_train_full, y_test = train_test_split(
     X, y, test_size=0.3, random_state=42, stratify=y
 )
 X_train, X_val, y_train, y_val = train_test_split(
-    X_train_full, y_train_full, test_size=0.5, random_state=42, stratify=y_train_full
+    X_train_full,
+    y_train_full,
+    test_size=0.5,
+    random_state=42,
+    stratify=y_train_full,
 )
 
 
 def get_metrics_row(y_true, y_pred, model_name):
-  # confusion matrix returns [[TN, FP], [FN, TP]]
   tn, fp, fn, tp = confusion_matrix(y_true, y_pred, labels=[0, 1]).ravel()
   acc = accuracy_score(y_true, y_pred)
   prec = precision_score(y_true, y_pred, zero_division=0)
@@ -90,12 +93,11 @@ def get_metrics_row(y_true, y_pred, model_name):
 
 # Task 2: Blind Baseline and Three Classifiers
 metrics_rows = []
-
-# 1. Blind baseline (predicts all on-time -> 0)
 val_preds_blind = np.zeros_like(y_val)
-metrics_rows.append(get_metrics_row(y_val, val_preds_blind, "blind_all_on_time"))
+metrics_rows.append(
+    get_metrics_row(y_val, val_preds_blind, "blind_all_on_time")
+)
 
-# 2. Logistic Regression Pipeline
 lr_pipe = Pipeline([
     ("scaler", StandardScaler()),
     ("model", LogisticRegression(random_state=42)),
@@ -104,7 +106,6 @@ lr_pipe.fit(X_train, y_train)
 val_preds_lr = lr_pipe.predict(X_val)
 metrics_rows.append(get_metrics_row(y_val, val_preds_lr, "logistic_regression"))
 
-# 3. Decision Tree Tuning (depths 2 to 10)
 best_dt_f1 = -1
 best_cd = 2
 best_dt_preds = None
@@ -119,12 +120,9 @@ for cd in [2, 3, 4, 5, 6, 8, 10]:
     best_dt_preds = preds
 
 metrics_rows.append(
-    get_metrics_row(
-        y_val, best_dt_preds, f"decision_tree_depth_{best_cd}"
-    )
+    get_metrics_row(y_val, best_dt_preds, f"decision_tree_depth_{best_cd}")
 )
 
-# 4. Default Random Forest
 rf_default = RandomForestClassifier(n_estimators=100, random_state=42)
 rf_default.fit(X_train, y_train)
 val_preds_rf = rf_default.predict(X_val)
@@ -153,45 +151,50 @@ for idx, feat in enumerate(FEATURES):
   })
 
 fs_df = pd.DataFrame(feature_scores_data)
-fs_df["f_rank"] = fs_df["f_score"].rank(ascending=False, method="min").astype(int)
+fs_df["f_rank"] = (
+    fs_df["f_score"].rank(ascending=False, method="min").astype(int)
+)
 fs_df = fs_df.sort_values("f_rank")[
     ["feature", "f_score", "f_rank", "importance", "is_noise"]
 ]
 fs_df.to_csv("outputs/part_c_feature_scores.csv", index=False)
 
-# Task 4 & 5: Feature Selection (k=7) and Hyperparameter Tuning
-selector_7 = SelectKBest(score_func=f_classif, k=7)
-X_train_k7 = selector_7.fit_transform(X_train, y_train)
-X_val_k7 = selector_7.transform(X_val)
+# Task 4 & 5: Feature Selection & Hyperparameter Tuning using Pipelines
+pipe_default = Pipeline([
+    ("select", SelectKBest(score_func=f_classif, k=7)),
+    ("model", RandomForestClassifier(n_estimators=100, random_state=42)),
+])
+pipe_default.fit(X_train, y_train)
+val_f1_default = f1_score(y_val, pipe_default.predict(X_val), zero_division=0)
 
 param_grid = {
-    "n_estimators": [50, 100, 150],
-    "max_depth": [4, 6, 8],
-    "min_samples_leaf": [1, 5, 10],
+    "model__n_estimators": [50, 100, 150],
+    "model__max_depth": [4, 6, 8],
+    "model__min_samples_leaf": [1, 5, 10],
 }
 
-rf_tune = RandomForestClassifier(random_state=42)
+pipe_tune = Pipeline([
+    ("select", SelectKBest(score_func=f_classif, k=7)),
+    ("model", RandomForestClassifier(random_state=42)),
+])
+
 grid_search = GridSearchCV(
-    estimator=rf_tune, param_grid=param_grid, cv=5, scoring="f1"
+    estimator=pipe_tune, param_grid=param_grid, cv=5, scoring="f1"
 )
-grid_search.fit(X_train_k7, y_train)
+grid_search.fit(X_train, y_train)
 
 rand_search = RandomizedSearchCV(
-    estimator=rf_tune,
+    estimator=pipe_tune,
     param_distributions=param_grid,
     n_iter=4,
     cv=5,
     random_state=42,
     scoring="f1",
 )
-rand_search.fit(X_train_k7, y_train)
+rand_search.fit(X_train, y_train)
 
-# Evaluate tuning models on validation
-val_f1_default = f1_score(
-    y_val, rf_default.predict(selector_7.transform(X_val)), zero_division=0
-)
-val_f1_grid = f1_score(y_val, grid_search.predict(X_val_k7), zero_division=0)
-val_f1_rand = f1_score(y_val, rand_search.predict(X_val_k7), zero_division=0)
+val_f1_grid = f1_score(y_val, grid_search.predict(X_val), zero_division=0)
+val_f1_rand = f1_score(y_val, rand_search.predict(X_val), zero_division=0)
 
 tuning_data = [
     {
@@ -214,22 +217,16 @@ tuning_data = [
 ]
 pd.DataFrame(tuning_data).to_csv("outputs/part_c_tuning.csv", index=False)
 
-# Select winning model configuration
 best_candidate_idx = np.argmax([val_f1_default, val_f1_grid, val_f1_rand])
-winning_models = [rf_default, grid_search.best_estimator_, rand_search.best_estimator_]
-winning_model_name = ["default_forest", "grid_search", "randomized_search"][best_candidate_idx]
-final_estimator = winning_models[best_candidate_idx]
-
-final_pipeline = Pipeline([
-    ("select", selector_7),
-    ("model", final_estimator),
-])
-final_pipeline.fit(X_train, y_train)
+winning_pipelines = [pipe_default, grid_search, rand_search]
+winning_names = ["default_forest", "grid_search", "randomized_search"]
+final_pipeline = winning_pipelines[best_candidate_idx]
+winning_name = winning_names[best_candidate_idx]
 
 config_data = [{
     "selector": "SelectKBest(f_classif, k=7)",
-    "model": winning_model_name,
-    "parameters": str(final_estimator.get_params()),
+    "model": winning_name,
+    "parameters": str(final_pipeline.get_params()),
 }]
 pd.DataFrame(config_data).to_csv("outputs/part_c_final_config.csv", index=False)
 
@@ -237,8 +234,7 @@ pd.DataFrame(config_data).to_csv("outputs/part_c_final_config.csv", index=False)
 val_probs = final_pipeline.predict_proba(X_val)[:, 1]
 thresholds = np.arange(0.1, 1.0, 0.1)
 threshold_rows = []
-
-chosen_threshold = 0.1
+chosen_threshold = 0.3
 max_rec_at_req = -1
 
 for th in thresholds:
@@ -275,7 +271,9 @@ final_pipeline.fit(X_train_val, y_train_val)
 test_probs = final_pipeline.predict_proba(X_test)[:, 1]
 test_preds = (test_probs >= chosen_threshold).astype(int)
 
-test_tn, test_fp, test_fn, test_tp = confusion_matrix(y_test, test_preds, labels=[0, 1]).ravel()
+test_tn, test_fp, test_fn, test_tp = confusion_matrix(
+    y_test, test_preds, labels=[0, 1]
+).ravel()
 test_acc = accuracy_score(y_test, test_preds)
 test_prec = precision_score(y_test, test_preds, zero_division=0)
 test_rec = recall_score(y_test, test_preds, zero_division=0)
@@ -292,6 +290,8 @@ final_test_data = [{
     "recall": round(float(test_rec), 4),
     "F1": round(float(test_f1), 4),
 }]
-pd.DataFrame(final_test_data).to_csv("outputs/part_c_final_test.csv", index=False)
+pd.DataFrame(final_test_data).to_csv(
+    "outputs/part_c_final_test.csv", index=False
+)
 
-print("Part C execution complete! All classification and threshold outputs successfully generated.")
+print("Part C execution complete successfully using Pipeline!")
