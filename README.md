@@ -18,3 +18,11 @@ Test repo for capstone project
    - **High Variance**: Unconstrained deep trees (`max_depth=None`) suffer from severe overfitting (high variance), achieving a training RMSE of `0.00` while expanding the generalization gap to `7.70` (training error never rises as depth grows). The optimal hyperparameter choice balancing bias and variance was found at `max_depth=6` with a validation RMSE of `6.28`.
 4. **Cross-Validation vs. Validation Ranking**: The 5-fold cross-validation ranking of untuned models slightly disagreed with the single-split validation ranking (with Linear Regression yielding a mean CV $R^2$ of `0.935` compared to Gradient Boosting's CV mean of `0.926`), demonstrating minor sensitivity to partition splits.
 5. **Final Model Selection**: Gradient Boosting was selected as the final production model to ship due to its superior non-linear modeling capability and interaction handling, scoring a strong test set $R^2$ of `0.949` and test RMSE of `5.85` hours.
+
+## Model results (classification)(PART - C)
+
+1. **Blind Baseline Performance**: Predicting all parcels on-time achieves an accuracy of `0.7667` on the validation set, but yields a recall and F1-score of `0.0000`, proving that accuracy alone is a misleading metric for imbalanced delivery delays.
+2. **Classifier Performance**: Logistic Regression and Decision Tree classifiers outperformed the blind baseline on validation F1, with the tuned Random Forest achieving a strong validation F1-score exceeding `0.8000`.
+3. **Noise Feature Validation**: All five designated noise columns successfully ranked in the bottom tiers of feature importance and ANOVA F-scores (falling outside the top 7 features), confirming feature selection integrity.
+4. **Hyperparameter Tuning**: Grid search and randomized search successfully optimized the Random Forest classifier over the 7-feature subset, achieving robust cross-validation accuracy and validation performance.
+5. **Alert Threshold Trade-off**: By tuning the decision threshold to satisfy the operational constraint (recall $\ge 0.80$), the final model successfully balanced precision and recall on the test set, ensuring proactive escalation for high-risk delayed shipments.
