@@ -20,8 +20,10 @@
 Test repo for capstone project
 
 ## Data findings (PART - A)
-<div align="center">
-  <h3>📊 🔍 <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=18&duration=3000&pause=1000&color=36BCF7&vCenter=true&width=320&lines=Data+findings+(PART+-+A)" alt="Data findings (PART - A)" /></a></h3>
+<div style="border: 2px solid #36BCF7; box-shadow: 0 0 15px rgba(54, 188, 247, 0.6); border-radius: 8px; padding: 12px 18px; background: rgba(54, 188, 247, 0.04); margin: 25px 0 12px 0; text-align: left;">
+  <h3 style="margin: 0; color: #36BCF7; display: flex; align-items: center; gap: 10px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+    <span style="font-size: 1.2em; display: inline-block;">📊</span> Data findings (PART - A)
+  </h3>
 </div>
 
 1. **Service Type Delay Rates**: Express shipments experience the highest delay frequency at a delay rate of `0.4897` (119 delayed out of 243 shipments), followed by Standard at `0.2056`, and Economy at `0.0857`.
