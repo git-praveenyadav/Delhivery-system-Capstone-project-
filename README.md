@@ -19,7 +19,7 @@
 
 <div align="center">
 
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=03045E,0077B6,00B4D8,CAF0F8&height=180&section=header&text=Delhivery%20Delay%20Intelligence&fontSize=32&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=AI/ML%20Last-Mile%20Logistics%20Optimization%20Pipeline&descSize=14&descAlignY=62" width="100%"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=timeGradient&height=180&section=header&text=Delhivery%20Delay%20Intelligence&fontSize=32&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=AI/ML%20Last-Mile%20Logistics%20Optimization%20Pipeline&descSize=14&descAlignY=62" width="100%"/>
 
   <p>
     <img src="https://img.shields.io/badge/Python-3.12%2B-blue?style=for-the-badge&logo=python&logoColor=white" />
