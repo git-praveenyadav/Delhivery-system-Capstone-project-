@@ -17,7 +17,7 @@ def clean_shipments(raw, medians=None):
   if "payment_mode" in clean_df.columns:
     clean_df["payment_mode"] = clean_df["payment_mode"].fillna("Unknown")
 
-  # iv. declared_value: clean currency formatting and convert to number
+  # iv. declared_value: clean currency and convert to float
   if "declared_value" in clean_df.columns:
     if clean_df["declared_value"].dtype == object:
       clean_df["declared_value_inr"] = (
@@ -31,7 +31,7 @@ def clean_shipments(raw, medians=None):
       clean_df["declared_value_inr"] = clean_df["declared_value"].astype(float)
     clean_df = clean_df.drop(columns=["declared_value"])
 
-  # v. dispatch_time: convert to a datetime object
+  # v. dispatch_time: convert to datetime
   if "dispatch_time" in clean_df.columns:
     clean_df["dispatch_time"] = pd.to_datetime(clean_df["dispatch_time"])
 
@@ -65,11 +65,14 @@ def build_features(clean, hubs):
   """Builds machine learning features by merging hubs and engineering columns."""
   df = clean.merge(hubs, on="hub_id", how="left")
 
-  # promised_hours: integer format
-  if "PROMISED_HOURS" in df.columns:
-    df["promised_hours"] = df["PROMISED_HOURS"].astype(int)
-  elif "promised_hours" in df.columns:
-    df["promised_hours"] = df["promised_hours"].astype(int)
+  # promised_hours mapping based on service type specifications
+  promised_hours_map = {"Express": 36, "Standard": 60, "Economy": 96}
+  if "service_type" in df.columns:
+    df["promised_hours"] = (
+        df["service_type"].map(promised_hours_map).fillna(60).astype(int)
+    )
+  else:
+    df["promised_hours"] = 60
 
   # is_cod: 1 when payment_mode is cod, else 0
   if "payment_mode" in df.columns:
@@ -94,6 +97,8 @@ def build_features(clean, hubs):
   # log_declared_value: natural log of declared_value_inr
   if "declared_value_inr" in df.columns:
     df["log_declared_value"] = np.log(df["declared_value_inr"] + 1)
+  else:
+    df["log_declared_value"] = 0.0
 
   return df
 
