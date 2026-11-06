@@ -20,6 +20,7 @@
 Test repo for capstone project
 
 ## Data findings (PART - A)
+
 <div style="border: 2px solid #36BCF7; box-shadow: 0 0 15px rgba(54, 188, 247, 0.6); border-radius: 8px; padding: 12px 18px; background: rgba(54, 188, 247, 0.04); margin: 25px 0 12px 0; text-align: left;">
   <h3 style="margin: 0; color: #36BCF7; display: flex; align-items: center; gap: 10px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
     <span style="font-size: 1.2em; display: inline-block;">📊</span> Data findings (PART - A)
