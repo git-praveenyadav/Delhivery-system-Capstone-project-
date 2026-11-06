@@ -26,3 +26,26 @@ Test repo for capstone project
 3. **Noise Feature Validation**: All five designated noise columns successfully ranked in the bottom tiers of feature importance and ANOVA F-scores (falling outside the top 7 features), confirming feature selection integrity.
 4. **Hyperparameter Tuning**: Grid search and randomized search successfully optimized the Random Forest classifier over the 7-feature subset, achieving robust cross-validation accuracy and validation performance.
 5. **Alert Threshold Trade-off**: By tuning the decision threshold to satisfy the operational constraint (recall $\ge 0.80$), the final model successfully balanced precision and recall on the test set, ensuring proactive escalation for high-risk delayed shipments.
+
+## How to run (PART - D)
+1. Install required packages: `pip install -r requirements.txt`
+2. Generate synthetic data: `python generate_data.py`
+3. Execute Part A (Cleaning & EDA): `python src/part_a_clean_eda.py`
+4. Execute Part B (Regression): `python src/part_b_regression.py`
+5. Execute Part C (Classification & Threshold): `python src/part_c_classification.py`
+6. Execute Part D (Segmentation & Scoring): 
+   - `python src/part_d_segments.py`
+   - `python src/package_model.py`
+   - `python src/predict_delay.py`
+
+## Operations recommendation
+Hubs identified under the **Escalate** segment (such as HUB13 Nagpur and HUB15 Kochi) exhibit high delay rates and require immediate hub-manager intervention. Flagged parcels in these zones must trigger direct managerial oversight rather than automated customer alerts.
+
+## Production plan
+1. **Accuracy & Reliability**: The pipeline maintains rigorous feature parity through centralized preprocessing functions in `shipment_prep.py`.
+2. **Monitoring**: Track weekly delay rates (`outputs/part_a_delay_by_group.csv`) and feature drift continuously.
+3. **Retraining Schedule**: Retrain the model on a monthly cadence using rolling historical delivery windows to account for seasonal sales events.
+
+## Limitations
+- The underlying dataset is synthetically generated[cite: 1] and may not fully replicate complex real-world bottleneck anomalies.
+- The classification threshold is tuned on a static validation split and should be re-calibrated dynamically if business cost matrices shift.
