@@ -47,5 +47,5 @@ Hubs identified under the **Escalate** segment (such as HUB13 Nagpur and HUB15 K
 3. **Retraining Schedule**: Retrain the model on a monthly cadence using rolling historical delivery windows to account for seasonal sales events.
 
 ## Limitations
-- The underlying dataset is synthetically generated[cite: 1] and may not fully replicate complex real-world bottleneck anomalies.
+- The underlying dataset is synthetically generated and may not fully replicate complex real-world bottleneck anomalies.
 - The classification threshold is tuned on a static validation split and should be re-calibrated dynamically if business cost matrices shift.
