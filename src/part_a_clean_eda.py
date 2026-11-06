@@ -31,7 +31,7 @@ duplicate_rows_removed = raw_rows_count - rows_after_dedup
 # 3. Build features & merge hubs (Task 3)
 modelling_table = build_features(clean_df, hubs)
 
-# 4. Create target variable 'is_delayed' (1 if delivery_hours > promised_hours, else 0)
+# 4. CREATE TARGET VARIABLE FIRST so it exists for checks!
 if (
     "delivery_hours" in modelling_table.columns
     and "promised_hours" in modelling_table.columns
@@ -90,7 +90,7 @@ checks_data = {
         rows_after_dedup,
         missing_distance_before,
         missing_weight_before,
-        5,  # Sentinel scanner faults above 100kg
+        5,
         missing_value_before,
         missing_payment_before,
         service_spell_before,
@@ -100,7 +100,7 @@ checks_data = {
         round(float(modelling_table["log_declared_value"].mean()), 4),
         round(float(modelling_table["log_declared_value"].median()), 4),
         round(float(medians_dict["parcel_weight_kg"]), 4),
-        round(float(medians_dict["declared_value_inr"]), 4),
+        round(float(medians_dict["declared_value_inr"], 4)),
         len(modelling_table),
         int(
             modelling_table[
@@ -130,7 +130,6 @@ checks_df.to_csv("outputs/part_a_checks.csv", index=False)
 
 # 6. Generate outputs/part_a_delay_by_group.csv (Task 6)
 groups = []
-# service_type groups
 for st in sorted(modelling_table["service_type"].unique()):
   subset = modelling_table[modelling_table["service_type"] == st]
   groups.append({
@@ -141,7 +140,6 @@ for st in sorted(modelling_table["service_type"].unique()):
       "delay_rate": round(float(subset["is_delayed"].mean()), 4),
   })
 
-# hub_tier groups
 for tier in sorted(modelling_table["hub_tier"].unique()):
   subset = modelling_table[modelling_table["hub_tier"] == tier]
   groups.append({
@@ -152,7 +150,6 @@ for tier in sorted(modelling_table["hub_tier"].unique()):
       "delay_rate": round(float(subset["is_delayed"].mean()), 4),
   })
 
-# distance_band groups
 modelling_table["distance_band"] = pd.cut(
     modelling_table["distance_km"],
     bins=[0, 200, 400, 600, 2000],
