@@ -3,7 +3,6 @@ import numpy as np
 import pandas as pd
 from shipment_prep import build_features, clean_shipments
 
-# Ensure output directories exist
 os.makedirs("data", exist_ok=True)
 os.makedirs("outputs", exist_ok=True)
 
@@ -13,7 +12,6 @@ print("--- Executing Part A: Data Foundation & Checks ---")
 raw_shipments = pd.read_csv("data/raw_shipments.csv")
 hubs = pd.read_csv("data/hubs.csv")
 
-# Capture pre-cleaning metrics for checks table
 raw_rows_count = len(raw_shipments)
 missing_distance_before = int(raw_shipments["distance_km"].isna().sum())
 missing_weight_before = int(raw_shipments["parcel_weight_kg"].isna().sum())
@@ -23,12 +21,12 @@ service_spell_before = int(
     (~raw_shipments["service_type"].isin(["Express", "Standard", "Economy"])).sum()
 )
 
-# 2. Clean shipments (Task 2)
+# 2. Clean shipments
 clean_df, medians_dict = clean_shipments(raw_shipments)
 rows_after_dedup = len(clean_df)
 duplicate_rows_removed = raw_rows_count - rows_after_dedup
 
-# 3. Build features & merge hubs (Task 3)
+# 3. Build features & merge hubs (This creates promised_hours!)
 modelling_table = build_features(clean_df, hubs)
 
 # 4. Create target variable 'is_delayed'
@@ -40,10 +38,10 @@ if (
       modelling_table["delivery_hours"] > modelling_table["promised_hours"]
   ).astype(int)
 
-# Save modelling table to data/
+# Save modelling table
 modelling_table.to_csv("data/modelling_table.csv", index=False)
 
-# 5. Generate outputs/part_a_checks.csv (Task 5)
+# 5. Generate outputs/part_a_checks.csv
 q1 = modelling_table["delivery_hours"].quantile(0.25)
 q3 = modelling_table["delivery_hours"].quantile(0.75)
 iqr = q3 - q1
@@ -100,7 +98,7 @@ checks_data = {
         round(float(modelling_table["log_declared_value"].mean()), 4),
         round(float(modelling_table["log_declared_value"].median()), 4),
         round(float(medians_dict["parcel_weight_kg"]), 4),
-        round(float(medians_dict["declared_value_inr"]), 4),  # <-- FIXED HERE
+        round(float(medians_dict["declared_value_inr"]), 4),
         len(modelling_table),
         int(
             modelling_table[
@@ -125,10 +123,9 @@ checks_data = {
         outlier_count,
     ],
 }
-checks_df = pd.DataFrame(checks_data)
-checks_df.to_csv("outputs/part_a_checks.csv", index=False)
+pd.DataFrame(checks_data).to_csv("outputs/part_a_checks.csv", index=False)
 
-# 6. Generate outputs/part_a_delay_by_group.csv (Task 6)
+# 6. Generate outputs/part_a_delay_by_group.csv
 groups = []
 for st in sorted(modelling_table["service_type"].unique()):
   subset = modelling_table[modelling_table["service_type"] == st]
@@ -166,10 +163,9 @@ for db in ["0-200", "201-400", "401-600", "601+"]:
       "delay_rate": round(float(subset["is_delayed"].mean()), 4),
   })
 
-group_df = pd.DataFrame(groups)
-group_df.to_csv("outputs/part_a_delay_by_group.csv", index=False)
+pd.DataFrame(groups).to_csv("outputs/part_a_delay_by_group.csv", index=False)
 
-# 7. Generate outputs/part_a_correlations.csv (Task 7)
+# 7. Generate outputs/part_a_correlations.csv
 corr_data = {
     "metric": [
         "corr(delivery_hours, promised_hours)",
@@ -203,7 +199,6 @@ corr_data = {
         ),
     ],
 }
-corr_df = pd.DataFrame(corr_data)
-corr_df.to_csv("outputs/part_a_correlations.csv", index=False)
+pd.DataFrame(corr_data).to_csv("outputs/part_a_correlations.csv", index=False)
 
 print("Part A completed successfully! All output files generated.")
