@@ -1,0 +1,5 @@
+hub_id,hub_city,region,hub_tier,segment
+HUB07,Kolkata,East,1,Watch
+HUB13,Nagpur,West,2,Escalate
+HUB15,Kochi,South,2,Escalate
+HUB22,Dehradun,North,3,Watch

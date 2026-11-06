@@ -1,0 +1,4 @@
+candidate,best_cv_accuracy,val_f1
+default_forest,0.7389,0.6743
+grid_search,0.7893,0.6145
+randomized_search,0.7893,0.6145

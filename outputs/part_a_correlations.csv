@@ -1,0 +1,4 @@
+metric,value
+"corr(delivery_hours, promised_hours)",0.8372
+"corr(delivery_hours, distance_km)",0.4013
+"corr(is_delayed, distance_km)",0.5455
