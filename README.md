@@ -17,23 +17,6 @@
 
 ---
 
-<div align="center">
-
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=timeGradient&height=180&section=header&text=Delhivery%20Delay%20Intelligence&fontSize=32&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=AI/ML%20Last-Mile%20Logistics%20Optimization%20Pipeline&descSize=14&descAlignY=62" width="100%"/>
-
-  <p>
-    <img src="https://img.shields.io/badge/Python-3.12%2B-blue?style=for-the-badge&logo=python&logoColor=white" />
-    <img src="https://img.shields.io/badge/Scikit--Learn-Model-orange?style=for-the-badge&logo=scikit-learn&logoColor=white" />
-    <img src="https://img.shields.io/badge/Pandas-Data%2C%20EDA-150458?style=for-the-badge&logo=pandas&logoColor=white" />
-    <img src="https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github&logoColor=white" />
-  </p>
-
-  <p>
-    <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=20&duration=3500&pause=1000&color=36BCF7&center=true&vCenter=true&width=700&lines=Optimizing+Supply+Chain+Delays+at+Scale;Predicting+Delivery+Hours+%26+Classifying+Risks;Actionable+Operations+Playbook+for+24+Hubs" alt="Typing SVG" /></a>
-  </p>
-
-</div>
-
 # **Delhivery-system-Capstone-project-**
 Test repo for capstone project
 
