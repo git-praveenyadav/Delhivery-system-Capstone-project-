@@ -19,7 +19,7 @@
 
 <div align="center">
 
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=03045e,023e8a,0077b6,00b4d8,90e0ef,caf0f8&height=180&section=header&text=Delhivery%20Delay%20Intelligence&fontSize=32&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=AI/ML%20Last-Mile%20Logistics%20Optimization%20Pipeline&descSize=14&descAlignY=62" width="100%"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0077b6&height=180&section=header&text=Delhivery%20Delay%20Intelligence&fontSize=32&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=AI/ML%20Last-Mile%20Logistics%20Optimization%20Pipeline&descSize=14&descAlignY=62" width="100%"/>
 
   <p>
     <img src="https://img.shields.io/badge/Python-3.12%2B-blue?style=for-the-badge&logo=python&logoColor=white" />
@@ -33,6 +33,7 @@
   </p>
 
 </div>
+
 # **Delhivery-system-Capstone-project-**
 Test repo for capstone project
 
