@@ -31,7 +31,7 @@ duplicate_rows_removed = raw_rows_count - rows_after_dedup
 # 3. Build features & merge hubs (Task 3)
 modelling_table = build_features(clean_df, hubs)
 
-# 4. CREATE TARGET VARIABLE FIRST so it exists for checks!
+# 4. Create target variable 'is_delayed'
 if (
     "delivery_hours" in modelling_table.columns
     and "promised_hours" in modelling_table.columns
@@ -100,7 +100,7 @@ checks_data = {
         round(float(modelling_table["log_declared_value"].mean()), 4),
         round(float(modelling_table["log_declared_value"].median()), 4),
         round(float(medians_dict["parcel_weight_kg"]), 4),
-        round(float(medians_dict["declared_value_inr"], 4)),
+        round(float(medians_dict["declared_value_inr"]), 4),  # <-- FIXED HERE
         len(modelling_table),
         int(
             modelling_table[
