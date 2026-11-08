@@ -67,3 +67,30 @@ Hubs identified under the **Escalate** segment (such as HUB13 Nagpur and HUB15 K
 ## Limitations
 - The underlying dataset is synthetically generated and may not fully replicate complex real-world bottleneck anomalies. 
 - The classification threshold is tuned on a static validation split and should be re-calibrated dynamically if business cost matrices shift.
+
+<!-- YOUR PROJECT CONTENT ABOVE -->
+
+### Model Performance Summary
+* **Regression (R2):** 0.84
+* **Classification Accuracy:** 89%
+
+---
+
+## 👨‍💻 Author & Connect
+
+Developed by **Praveen Yadav** 
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/)
+
+<br />
+
+<div align="center">
+  <a href="#top">
+    <img src="https://img.shields.io/badge/Back%20to%20Top-↑-2196F3?style=for-the-badge" alt="Back to Top" />
+  </a>
+</div>
+
+<div align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=100&section=footer" width="100%"/>
+</div>
