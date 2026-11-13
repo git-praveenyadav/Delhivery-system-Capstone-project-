@@ -1,6 +1,5 @@
 # Here this contains text file that lists all the external Python libraries (like Pandas, Scikit-Learn, NumPy) and their exact version numbers required to run your code.
 
-# Library names and their versions
 pandas==2.2.3
 numpy==2.4.6
 scikit-learn==1.6.1
