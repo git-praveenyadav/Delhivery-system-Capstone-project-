@@ -18,7 +18,8 @@
 
 ---
 # **Delhivery-system-Capstone-project-**
-Test repo for capstone project
+
+End-to-end machine learning and operations analytics pipeline for last-mile logistics delay intelligence, predicting parcel delivery hours, flagging SLA/promise breaches, auditing hub tier behavior, and generating batch scoring outputs in a reproducible workflow.
 
 ## Data findings (PART - A)
 
